@@ -1,0 +1,174 @@
+#include<stdio.h>
+#include<windows.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+void qip(char QP[3][3]  )   //棋盘设置
+{
+	int t;                          
+	for (int i = 0; i < 3; i++)
+	{
+	    for (t = 0; t < 3; t++)           
+		{
+		    printf(" %c", QP[i][t]);
+			if(t <2)	 printf("|");
+        }
+			printf("\n");
+	    for (t = 0; t < 3; t++)
+		{
+			if (i == 2)	 break;
+			printf("--");
+			if(t<2)    	 printf("+");
+		}
+			printf("\n");
+	}
+}
+int  SHY(char A[3][3])                  //胜负判断
+{
+	int i, j, turn;
+	for (i = 0; i < 3; i++)                    //按横判断
+	{
+		turn = 3;
+		for (j = 0; j < 3; j++)
+		{
+			if (A[i][j] == '*')
+				turn++;
+			if (A[i][j] == '#')
+			    turn--;
+		}
+		if(turn==6)
+			return 1;
+		if (turn == 0)
+			return 2;
+	}
+	for (j= 0; j < 3; j++)                    //按竖判断
+	{   
+		turn = 3;
+		for (i = 0; i< 3; i++)
+		{
+			if (A[i][j] == '*')
+				turn++;
+			if (A[i][j] == '#')
+				turn--;
+		}
+		if (turn == 6)
+			return 1;
+		if (turn ==0)
+			return 2;
+	}
+	turn = 3;
+	for (i=j=0; i < 3;i++,j++)                    //左右斜角判断
+	{
+		if (A[i][j] == '*')
+			turn++;
+	    if (A[i][j] == '#')
+			turn--;	
+	}
+		if (turn == 6)
+			return 1;
+		if (turn == 0)
+			return 2;
+	turn = 3;
+	for (i = 0, j = 2; i < 3;i++,j-- )                                 //右左斜角判断
+	{       
+			if (A[i][j] == '*')
+				turn++;
+			if (A[i][j] == '#')
+				turn--;
+	}
+		if (turn == 6)
+			return 1;
+	    if (turn == 0)
+			return 2;
+	turn = 0;                                //平局判断
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			if (A[i][j]== ' ')
+				turn=1;
+	if (turn !=1) 
+		return 3;
+	return 0;
+}
+void APP(char INPUT[3][3])
+{
+	int a,b,i=0;
+	int c, d;
+	srand((unsigned int)time(NULL));
+	while(1)
+	{
+		int count = 0;
+		i++;
+	    YY:                                  // 判断玩家输入是否正确
+		printf("请玩家输入位置(a,b)=>");          //玩家下棋
+		scanf("%d%d", &a, &b);                                  
+		if((a>=1&&a<=3)&&(b>=1&&b<=3));
+		else
+		{   printf("坐标错误请重新输入\n");
+			goto YY;
+		}
+		if(INPUT[a - 1][b - 1] ==' ')
+		INPUT[a - 1][b - 1] = '*';
+		else 
+		{
+			printf("此处已有棋子\n");
+			goto YY;
+		}
+		qip(INPUT);
+		if(i>=3)                    //输赢判断
+		count=SHY(INPUT);                    
+		if (count == 1)
+		{
+			printf("玩家获胜!");
+			break;
+		}
+		if (count == 3)
+		{
+			printf("平局!");
+			break;
+		}		
+		PP:                                  //电脑下棋
+			c = rand() % 3;
+			d = rand() % 3;
+			if (INPUT[c][d] == ' ')
+				INPUT[c][d] = '#';
+			else	goto PP;
+		system("cls");
+		qip(INPUT);
+		if (i >= 3)
+		count=SHY(INPUT);                     //输赢判断
+		if (count == 2)
+		{
+			printf("电脑获胜!");
+			break;
+		}
+	}	
+}
+void game(char INPUT[3][3])        //游戏代码
+{
+	qip(INPUT);                                //q棋盘打印
+	APP(INPUT);                                //对弈
+}
+int main()
+{
+	int x;
+	char Input[3][3]= { 0 };
+	printf("欢迎试玩'三子棋',游戏即将开始!\n");
+	printf("准备好了吗？输入'1'开始游戏，输入'0'退出游戏\n");
+DD:
+	scanf("%d",&x);
+	switch (x)
+	{
+	  case 0:  printf("再见!\n");
+		  break;
+	  case 1:
+		  for (int a = 0; a < 3; a++)
+			for (int b = 0; b < 3; b++)
+				Input[a][b] = ' ';
+		   game(Input);
+		   printf("还想再来一局吗？'1'继续，'0'退出\n");
+		   goto DD;
+	  default:
+		   printf("输入无效!\n");
+		   goto DD;
+	}
+}
