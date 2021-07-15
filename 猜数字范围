@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<windows.h>
+#include<time.h>
+void game()
+{
+	int a, b, c, d = 0, e, h;
+	printf(" 输入1---对应0~100范围数字\n 输入2--对应0~1000范围数字\n");
+	scanf("%d", &a);
+srand:"(unsgined int)time(NULL)";
+	if (a == 1)
+		b = 2,a = 6;
+	if (a == 2)
+		b = 3,a = 16;
+	for (c = 0; c < b; c++)
+	{
+		e = rand() % 10;
+		d = d * 10 + e;
+	}
+	for (c = 1; c < a; c++)
+	{
+		printf("输入数字=");
+		scanf("%d", &h);
+		if (h == d)
+		{
+			printf("恭喜你猜对了!!\n");
+			break;
+		}
+		if (h > d)
+			printf("错误,数字过大!你还有%d次机会,答案范围d~%d\n", a - c, h);
+		else
+			printf("错误,数字过小!你还有%d次机会,答案范围%d~d\n", a - c, h);
+	}
+	if (a == c)
+		printf("游戏失败！\n");
+}
+int main()
+{
+	int a;
+	printf("******输入'1'开始游戏,'0'退出******\n");
+again:
+APP:
+	scanf("%d", &a);
+	switch (a)
+	{
+	case 0:  printf("已退出游戏!\n");
+		break;
+	case 1:  printf("游戏开始!\n");
+		game();
+		printf("还想继续游戏吗？'1'继续'0'退出\n");
+		goto APP;
+		break;
+	default: printf("无效输入,请重新输入.\n");
+		goto again;
+	}
+}
