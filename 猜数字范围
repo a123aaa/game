@@ -42,8 +42,7 @@ APP:
 	scanf("%d", &a);
 	switch (a)
 	{
-	case 0:  printf("已退出游戏!\n");
-		break;
+	case 0:  printf("已退出游戏!\n");  break;
 	case 1:  printf("游戏开始!\n");
 		game();
 		printf("还想继续游戏吗？'1'继续'0'退出\n");
