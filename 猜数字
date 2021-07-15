@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<time.h>
+#include<windows.h>
+void game(int x)
+{
+	int a, i, b, c = 0, d;
+	printf("3~6位数密码,输入数字位数大小!\n");
+	srand((unsigned int)time(NULL));
+	scanf("%d",&a);
+	for (i = 0; i < a; i++)
+	{
+		b = rand() % 10;
+		if (b == 0)
+			b++;
+		c = c * 10 + b;
+	}
+	for (d = 0; d < a; d++)
+	{
+		int g;
+		printf("请输入密码!");
+		scanf("%d",&g);
+		if (g == c)
+		{
+			printf("密码正确!\n");
+			break;
+		}
+		else
+			printf("密码错误，你还有%d次机会!\n", a - d - 1);
+	}
+	if (d== a)
+		printf("游戏挑战失败!\n");
+}
+int main()
+{
+	int x;
+	printf("##*********猜密码游戏*********##\n");
+	printf("##输入'1'开始游戏或'0'退出游戏##\n");
+	scanf("%d",&x);
+	again:
+	switch (x)
+	{
+	   case 0:  printf("退出成功!\n");
+		        break;
+	   case 1:  printf("游戏开始!\n");
+	   APP:
+		        game(x);
+				printf("你还想继续玩游戏吗？\n输入'1'继续,输入'0'退出");
+				scanf("%d", &x);
+				if (x == 1)
+			    goto APP;
+		        break;
+	   default: printf("请重新输入");
+		        goto again;
+		        break;
+	}
+	return 0;
+}
