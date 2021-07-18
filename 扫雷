@@ -1,0 +1,115 @@
+#include<stdio.h>
+#include<math.h>
+#include<windows.h>
+void Put(char* a, int b)               //打印棋盘
+{
+	for (int i = 0; i < pow(b, 2); i++)
+	{
+		printf("%c ", a[i]);
+		if ((i + 1) % b == 0)
+			printf("\n");
+	}
+}
+int judge(char moban[11][11], int a, int b)
+{
+	if (moban[a][b] == '0')  return 0;
+	else return 1;
+}
+int count(char moban[11][11], int a, int b)         //雷数判断
+{
+	int num = 0;
+	for (int i = a - 1; i <= a + 1; i++)
+		for (int j = b - 1; j <= b + 1; j++)
+			if (moban[i][j] == '0')
+				num++;
+	return num;
+}
+void begin(char qipan[9][9],char moban[11][11])     //游戏开始
+{
+	int a, b,num=66;
+	do
+	{
+		printf("请玩家输入坐标=>");
+		scanf("%d%d", &a, &b);
+		if (judge(moban, a, b))
+		{
+			qipan[a-1][b-1] = count(moban, a, b)+48;            //打印雷数
+			system("cls");
+			Put(qipan, 9);
+			num--;
+		}
+		else
+		{
+			printf("游戏结束！");  break;
+		}
+		you:
+		printf("输入'1'进行标记，输入'0'放弃标记");
+		scanf("%d", &a);
+		if (a>1||a<0)     goto you;
+		while (a)
+		{
+			printf("输入坐标标记炸弹=>");
+			scanf("%d%d", &a, &b);
+			qipan[a - 1][b - 1] = '@';
+			Put(qipan, 9);
+			printf("输入'1'进行标记，输入'0'放弃标记");
+			scanf("%d", &a);
+		}
+	} while (num);
+	if (num == 0)
+		printf("恭喜你，游戏通关！");
+}
+void Lei(char a[11][11], int b)        //安排雷
+{
+	int hang, lie, c = 15;
+	srand((unsigned int)time(NULL));
+	while (c)
+	{
+		hang = rand() % 9 + 1;
+		lie = rand() % 9 + 1;
+		if (a[hang][lie] == '*')
+		{
+			a[hang][lie] = '0';
+			c--;
+		}
+	}
+}
+void Get(char *a,int b)                //给棋盘赋初值
+{
+	for (int i=0; i <pow(b,2); i++)
+		a[i] = '*';
+}
+
+void game()
+{
+	char moban[11][11], qipan[9][9];
+	Get(moban,11);         //给棋盘赋初值
+	Get(qipan,9);       
+	Put(qipan, 9);         //打印棋盘
+	Lei(moban,11);         //安排雷
+	begin(qipan, moban);  //游戏开始
+}
+void nume()
+{
+	printf("扫雷游戏！\n");
+	printf("准备好了吗，输入'1'开始游戏，输入'0'退出游戏。\n");
+	int input;
+	do
+	{
+		again:
+		scanf("%d", &input);
+		switch (input)
+		{
+		case 0:    printf("游戏结束!\n");   	         break;
+		case 1:    printf("游戏开始!\n");                game(); 
+			       printf("再来一局输入'1',否则输入'0'\n");
+				   goto again;                           break;
+		default:   printf("输入无效，请重新输入!\n");    break;
+		}
+	} while (input);
+}
+int main()
+{
+	nume();
+	return 0;
+}
